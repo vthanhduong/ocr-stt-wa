@@ -50,6 +50,7 @@
         }
         #result {
             white-space: pre-wrap;
+            word-wrap: break-word;
             background: white;
             padding: 1rem;
             border-radius: 8px;
@@ -83,7 +84,7 @@
     {% if extracted_text %}
         <div id="result">
             <strong>Extracted Text:</strong>
-            <pre>{{ extracted_text }}</pre>
+            <p>{{ extracted_text }}</p>
         </div>
     {% endif %}
 </body>

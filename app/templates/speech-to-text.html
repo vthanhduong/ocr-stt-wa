@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Speech To Text</title>
+    <title>Speech to Text</title>
     <style>
         body {
             margin: 0;
@@ -49,7 +49,8 @@
             background-color: #357ABD;
         }
         #result {
-            white-space: pre-wrap;
+            white-space: no-wrap;
+            word-wrap: break-word;
             background: white;
             padding: 1rem;
             border-radius: 8px;
@@ -67,24 +68,21 @@
             width: 100%;
             text-align: center;
         }
-    </style>
+</style>
 </head>
 <body>
-    <h1>Speech To Text</h1>
-
+    <h1>Speech to Text</h1>
     {% if error %}
         <div class="error">{{ error }}</div>
     {% endif %}
-
     <form method="POST" enctype="multipart/form-data">
-        <input type="file" name="image" accept="image/*" required />
-        <button type="submit">Convert Text</button>
+        <input type="file" name="record" accept="audio/*" required />
+        <button type="submit">Convert Speech to Text</button>
     </form>
-
-    {% if converted_text %}
+    {% if recognized_text %}
         <div id="result">
-            <strong>Converted Text:</strong>
-            <pre>{{ converted_text }}</pre>
+            <strong>Recognized Text:</strong>
+            <p>{{ recognized_text }}</p>
         </div>
     {% endif %}
 </body>
