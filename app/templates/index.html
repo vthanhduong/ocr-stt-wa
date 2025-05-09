@@ -68,16 +68,28 @@
             width: 100%;
             text-align: center;
         }
+        a {
+            text-decoration: none;
+            color: #2bb1e1;
+        }
+        a:hover {
+            text-decoration: underline;
+            color: #2295bf;
+        }
     </style>
 </head>
 <body>
     <h1>OCR: Image to Text</h1>
+    <a href="/speech-to-text">Click here to switch to Speech to Text</a>
+    <br/>
     {% if error %}
         <div class="error">{{ error }}</div>
     {% endif %}
 
     <form method="POST" enctype="multipart/form-data">
         <input type="file" name="image" accept="image/*" required />
+        <p style="text-align: center">Or</p>
+        <button type="button" style="background: #6fe943; margin-bottom: 18px">Capture</button>
         <button type="submit">Extract Text</button>
     </form>
 

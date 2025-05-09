@@ -10,6 +10,7 @@ import tempfile
 
 app = Flask(__name__)
 
+# using PyTesseract & Tesseract-OCR
 @app.route('/ocr', methods=['GET', 'POST'])
 def ocr():
     extracted_text = ""
@@ -27,13 +28,13 @@ def ocr():
                 img_bytes = file.read();
                 img = Image.open(io.BytesIO(img_bytes))
                 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-                custom_config = r'-l vie'
+                custom_config = r'-l vie+eng'
                 extracted_text = pytesseract.image_to_string(img, config=custom_config)
             except Exception as e:
                 error = f'Failed to process image. Error: {str(e)}'
             return render_template('index.html', extracted_text=extracted_text, error=error)
     return render_template('index.html', extracted_text=extracted_text, error=error)
-
+# using SpeechRecognition
 @app.route('/speech-to-text', methods=['GET', 'POST'])
 def speech_to_text():
     recognized_text = ""
@@ -64,8 +65,8 @@ def speech_to_text():
                     audio_data = recognizer.record(source)
                     recognized_text = recognizer.recognize_google(audio_data)
                 os.unlink(audio_path)
-            except sr.UnknownValueError:
-                error = "Couldn't specify audio value"
+            except sr.UnknownValueError as e:
+                error = f"Couldn't specify audio value. Error: {str(e)}"
             except sr.RequestError as e:
                 error = f"Couldn't request results from Google Speech Recognition"
             except Exception as e:

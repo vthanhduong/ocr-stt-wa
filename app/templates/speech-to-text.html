@@ -68,15 +68,27 @@
             width: 100%;
             text-align: center;
         }
+        a {
+            text-decoration: none;
+            color: #2bb1e1;
+        }
+        a:hover {
+            text-decoration: underline;
+            color: #2295bf;
+        }
 </style>
 </head>
 <body>
     <h1>Speech to Text</h1>
+    <a href="/ocr">Click here to switch to OCR</a>
+    <br/>
     {% if error %}
         <div class="error">{{ error }}</div>
     {% endif %}
     <form method="POST" enctype="multipart/form-data">
         <input type="file" name="record" accept="audio/*" required />
+        <p style="text-align: center">Or</p>
+        <button type="button" style="background: red; margin-bottom: 18px">Record</button>
         <button type="submit">Convert Speech to Text</button>
     </form>
     {% if recognized_text %}
