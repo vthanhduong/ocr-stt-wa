@@ -87,9 +87,7 @@
     {% endif %}
 
     <form method="POST" enctype="multipart/form-data">
-        <input type="file" name="image" accept="image/*" required />
-        <p style="text-align: center">Or</p>
-        <button type="button" style="background: #6fe943; margin-bottom: 18px">Capture</button>
+        <input type="file" name="image" accept="image/*,.pdf" required />
         <button type="submit">Extract Text</button>
     </form>
 

@@ -8,6 +8,8 @@ from pydub import AudioSegment
 import os
 import tempfile
 
+from pdf2image import convert_from_path
+
 app = Flask(__name__)
 
 # using PyTesseract & Tesseract-OCR
@@ -15,6 +17,8 @@ app = Flask(__name__)
 def ocr():
     extracted_text = ""
     error = ""
+    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+    custom_config = r'-l vie+eng'
     if request.method == 'POST':
         if 'image' not in request.files:
             error = "No file part in the request"
@@ -23,12 +27,22 @@ def ocr():
         if file.filename == '':
             error = "No file selected"
             return render_template('index.html', extracted_text=extracted_text, error=error)
-        if file:
+        if os.path.splitext(file.filename)[1].lower() == '.pdf':
+            try:
+                with tempfile.NamedTemporaryFile(delete=False, suffix=os.path.splitext(file.filename)[1]) as tmp:
+                    file.save(tmp.name)
+                    pdf_path = tmp.name
+                pages = convert_from_path(pdf_path, 500, poppler_path=r'C:\Users\Admin\Downloads\Release-24.08.0-0\poppler-24.08.0\Library\bin')
+                for i, page_data in enumerate(pages):
+                    extracted_text = extracted_text + pytesseract.image_to_string(page_data, config=custom_config) + '\n'
+                os.unlink(pdf_path)
+            except Exception as e:
+                error = f'Failed to process image. Error: {str(e)}'
+            return render_template('index.html', extracted_text=extracted_text, error=error)
+        else:
             try:
                 img_bytes = file.read();
                 img = Image.open(io.BytesIO(img_bytes))
-                pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-                custom_config = r'-l vie+eng'
                 extracted_text = pytesseract.image_to_string(img, config=custom_config)
             except Exception as e:
                 error = f'Failed to process image. Error: {str(e)}'
