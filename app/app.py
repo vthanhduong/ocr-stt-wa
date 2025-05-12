@@ -18,8 +18,8 @@ def ocr():
     extracted_text = ""
     error = ""
     pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-    custom_config = r'-l vie+eng'
     if request.method == 'POST':
+        custom_config = r'-l ' + request.form.get('lang')
         if 'image' not in request.files:
             error = "No file part in the request"
             return render_template('index.html', extracted_text=extracted_text, error=error)
@@ -77,7 +77,7 @@ def speech_to_text():
                 recognizer = sr.Recognizer()
                 with sr.AudioFile(audio_path) as source:
                     audio_data = recognizer.record(source)
-                    recognized_text = recognizer.recognize_google(audio_data)
+                    recognized_text = recognizer.recognize_google(audio_data, language=request.form.get('lang'))
                 os.unlink(audio_path)
             except sr.UnknownValueError as e:
                 error = f"Couldn't specify audio value. Error: {str(e)}"

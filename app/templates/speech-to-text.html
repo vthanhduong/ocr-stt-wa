@@ -34,6 +34,9 @@
             margin-bottom: 1rem;
             width: 100%;
         }
+        input[type="radio"] {
+            margin-bottom: 1rem;
+        }
         button {
             width: 100%;
             padding: 0.6rem;
@@ -87,6 +90,8 @@
     {% endif %}
     <form method="POST" enctype="multipart/form-data">
         <input type="file" name="record" accept="audio/*" required />
+        <input type="radio" name="lang" value="vi-VN" checked> Vietnamese
+        <input type="radio" name="lang" value="en-EN"> English
         <button type="submit">Convert Speech to Text</button>
     </form>
     {% if recognized_text %}
